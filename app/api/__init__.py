@@ -19,3 +19,7 @@ api = Api(blueprint,
           authorizations=authorizations,
           security='basicAuth'
           )
+
+from .endpoints.config import ns as config_namespace
+
+api.add_namespace(config_namespace)
