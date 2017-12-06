@@ -35,6 +35,9 @@ def verify_password(username, password):
     :rtype: bool
     """
 
+    if username is None or password is None:
+        return False
+
     sensor = Sensor.get(id=username, ignore=404)
 
     if sensor is None or not sensor.verify_key(password):
