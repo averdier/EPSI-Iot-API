@@ -57,6 +57,7 @@ def verify_password(username, password):
 class ConfigItem(Resource):
     decorators = [auth.login_required]
 
+    @ns.doc(security='basicAuth')
     @ns.marshal_with(config_minimal)
     def get(self):
         """
