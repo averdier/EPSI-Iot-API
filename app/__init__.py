@@ -25,8 +25,6 @@ def create_app(config_name='default'):
     with app.app_context():
         Sensor.init()
 
-        user_search = User.search().execute()
-
     app.register_blueprint(api_blueprint)
 
     return app
