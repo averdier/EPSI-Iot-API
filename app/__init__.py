@@ -21,9 +21,9 @@ def create_app(config_name='default'):
 
     connections.create_connection(hosts=[config[config_name].ELASTICSEARCH_HOST], timeout=20)
 
-    from app.models import Sensor
+    from app.models import Device
     with app.app_context():
-        Sensor.init()
+        Device.init()
 
     app.register_blueprint(api_blueprint)
 

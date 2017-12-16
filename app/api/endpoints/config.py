@@ -4,7 +4,7 @@ from flask import g
 from flask_restplus import Namespace, Resource
 from flask_httpauth import HTTPBasicAuth
 from ..serializers.config import config_minimal
-from app.models import Sensor
+from app.models import Device
 
 ns = Namespace('config', description='Configuration related operations')
 
@@ -38,7 +38,7 @@ def verify_password(username, password):
     if username is None or password is None:
         return False
 
-    sensor = Sensor.get(id=username, ignore=404)
+    sensor = Device.get(id=username, ignore=404)
 
     if sensor is None or not sensor.verify_key(password):
         return False

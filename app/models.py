@@ -3,8 +3,9 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired
 from flask import current_app
-from elasticsearch_dsl import DocType, Date, Text, Integer
+from elasticsearch_dsl import DocType, Date, Text, Integer, InnerObjectWrapper, Keyword, Object
 from .utils import hash_sha256
+
 
 class MyDocType(DocType):
     created_at = Date()
@@ -27,12 +28,30 @@ class MyDocType(DocType):
         return super().update(using, index, **fields)
 
 
-class Sensor(MyDocType):
+class MQTTAccount(InnerObjectWrapper):
+    """
+    MQTT Account wrapper
+    """
+
+
+class Device(MyDocType):
+    device_type = Keyword()
     pos_x = Integer()
     pos_y = Integer()
     radius = Integer()
-    mqtt_token = Text()
-    key = Text()
+    key = Keyword()
+    mqtt_account = Object(
+        doc_class=MQTTAccount,
+        properties={
+            'username': Keyword(),
+            'password': Keyword(),
+            'server': Keyword(),
+            'port': Integer(),
+            'keep_alive': Keyword(),
+            'clients_topic': Keyword(),
+            'response_topic': Keyword()
+        }
+    )
 
     class Meta:
         index = 'bluetooth'
